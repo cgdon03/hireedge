@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>HireEdge AI — Land Your Dream Job</title>
+<meta name="description" content="AI-powered cover letters, ATS scoring, and resume rewrites. Get more interviews in minutes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --card: #1a1a24;
+    --border: #2a2a3a;
+    --accent: #6c63ff;
+    --accent2: #ff6584;
+    --accent3: #43e97b;
+    --text: #f0f0f8;
+    --muted: #7a7a9a;
+    --gold: #ffd166;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 10%, rgba(108,99,255,0.13) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 80%, rgba(255,101,132,0.10) 0%, transparent 60%);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 32px;
+    background: rgba(10,10,15,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; letter-spacing: -0.5px; }
+  .logo span { color: var(--accent); }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .nav-badge {
+    background: rgba(108,99,255,0.15); border: 1px solid rgba(108,99,255,0.4);
+    color: var(--accent); font-size: 0.75rem; font-weight: 500;
+    padding: 4px 12px; border-radius: 100px;
+  }
+  .nav-pro-btn {
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 10px;
+    padding: 8px 16px; font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-pro-btn:hover { background: #7c74ff; }
+
+  /* HERO */
+  .hero {
+    position: relative; z-index: 1;
+    text-align: center; padding: 80px 24px 60px;
+    max-width: 780px; margin: 0 auto;
+  }
+  .hero-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(67,233,123,0.1); border: 1px solid rgba(67,233,123,0.3);
+    color: var(--accent3); font-size: 0.8rem; font-weight: 500;
+    padding: 6px 16px; border-radius: 100px; margin-bottom: 28px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-pill::before { content: '●'; font-size: 0.5rem; }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem); font-weight: 800;
+    line-height: 1.08; letter-spacing: -1.5px; margin-bottom: 22px;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+  h1 em { font-style: normal; color: var(--accent); }
+  .hero p {
+    color: var(--muted); font-size: 1.1rem; line-height: 1.7;
+    max-width: 520px; margin: 0 auto 36px;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+  .hero-stats {
+    display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+  /* APP */
+  .app-container {
+    position: relative; z-index: 1;
+    max-width: 900px; margin: 0 auto; padding: 0 20px 80px;
+  }
+  .usage-bar {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px 20px; margin-bottom: 20px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .usage-fill-track {
+    flex: 1; height: 6px; background: var(--border);
+    border-radius: 100px; overflow: hidden;
+  }
+  .usage-fill {
+    height: 100%; border-radius: 100px;
+    background: linear-gradient(90deg, var(--accent3), var(--accent));
+    transition: width 0.5s ease;
+  }
+  .usage-text { font-size: 0.82rem; color: var(--muted); white-space: nowrap; }
+  .usage-text strong { color: var(--text); }
+
+  /* TABS */
+  .tabs {
+    display: flex; gap: 4px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 14px;
+    padding: 6px; margin-bottom: 28px;
+  }
+  .tab {
+    flex: 1; padding: 12px 10px; border: none; border-radius: 10px;
+    background: transparent; color: var(--muted);
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; font-weight: 500;
+    cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  }
+  .tab.active { background: var(--accent); color: #fff; }
+  .tab:hover:not(.active) { background: var(--card); color: var(--text); }
+
+  /* CARD */
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 28px; margin-bottom: 20px;
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700;
+    margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+  }
+  .card-title .icon {
+    width: 30px; height: 30px; background: rgba(108,99,255,0.15);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+  }
+  label { display: block; font-size: 0.82rem; color: var(--muted); margin-bottom: 8px; font-weight: 500; }
+  textarea, input[type=text] {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 0.92rem;
+    padding: 14px 16px; resize: vertical; transition: border-color 0.2s; outline: none;
+  }
+  textarea:focus, input:focus { border-color: var(--accent); }
+  textarea { min-height: 130px; }
+
+  .btn-primary {
+    width: 100%; padding: 16px; background: var(--accent); color: #fff;
+    border: none; border-radius: 14px; font-family: 'Syne', sans-serif;
+    font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .btn-primary:hover { background: #7c74ff; transform: translateY(-1px); box-shadow: 0 8px 30px rgba(108,99,255,0.4); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* RESULT */
+  .result-box {
+    background: var(--surface); border: 1px solid rgba(108,99,255,0.3);
+    border-radius: 16px; padding: 24px; margin-top: 20px;
+    animation: fadeUp 0.4s ease both;
+  }
+  .result-label {
+    font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--accent); margin-bottom: 12px;
+  }
+  .result-text { font-size: 0.93rem; line-height: 1.75; color: var(--text); white-space: pre-wrap; }
+  .copy-btn {
+    margin-top: 16px; background: rgba(108,99,255,0.12);
+    border: 1px solid rgba(108,99,255,0.3); color: var(--accent);
+    padding: 10px 20px; border-radius: 10px; font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s;
+  }
+  .copy-btn:hover { background: rgba(108,99,255,0.25); }
+
+  /* LOADING */
+  .loading {
+    display: flex; flex-direction: column; align-items: center; gap: 16px;
+    padding: 40px; color: var(--muted); font-size: 0.9rem;
+  }
+  .spinner {
+    width: 36px; height: 36px; border: 3px solid var(--border);
+    border-top-color: var(--accent); border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  /* SCORE */
+  .score-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 14px; margin-top: 20px; }
+  .score-item { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px 16px; text-align: center; }
+  .score-circle {
+    width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; border: 3px solid;
+  }
+  .score-circle.high { border-color: var(--accent3); color: var(--accent3); background: rgba(67,233,123,0.08); }
+  .score-circle.mid  { border-color: var(--gold);    color: var(--gold);    background: rgba(255,209,102,0.08); }
+  .score-circle.low  { border-color: var(--accent2); color: var(--accent2); background: rgba(255,101,132,0.08); }
+  .score-name { font-size: 0.78rem; color: var(--muted); font-weight: 500; }
+
+  /* PAYWALL */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.88);
+    backdrop-filter: blur(10px); z-index: 200;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; animation: fadeIn 0.3s ease;
+  }
+  .modal {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 24px; padding: 40px 36px; max-width: 480px; width: 100%;
+    text-align: center; animation: scaleIn 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  .modal-emoji { font-size: 3rem; margin-bottom: 16px; }
+  .modal h2 { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 10px; }
+  .modal p { color: var(--muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 24px; }
+  .price-tag { font-family: 'Syne', sans-serif; font-size: 2.8rem; font-weight: 800; color: var(--gold); display: block; }
+  .price-period { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; display: block; }
+  .perks { list-style: none; text-align: left; margin-bottom: 24px; background: var(--surface); border-radius: 14px; padding: 18px 20px; }
+  .perks li { font-size: 0.9rem; color: var(--muted); padding: 6px 0; display: flex; align-items: center; gap: 10px; }
+  .perks li::before { content: '✓'; color: var(--accent3); font-weight: 700; flex-shrink: 0; }
+  .btn-upgrade {
+    width: 100%; padding: 17px;
+    background: linear-gradient(135deg, var(--accent), #a88cff);
+    color: #fff; border: none; border-radius: 14px;
+    font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 800;
+    cursor: pointer; transition: all 0.2s; box-shadow: 0 8px 30px rgba(108,99,255,0.4);
+  }
+  .btn-upgrade:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(108,99,255,0.55); }
+  .modal-dismiss { margin-top: 14px; background: none; border: none; color: var(--muted); font-size: 0.82rem; cursor: pointer; text-decoration: underline; display: block; width: 100%; }
+  .guarantee { font-size: 0.75rem; color: var(--muted); margin-top: 14px; }
+
+  /* TESTIMONIALS */
+  .testimonials {
+    position: relative; z-index: 1;
+    max-width: 900px; margin: 0 auto 80px; padding: 0 20px;
+  }
+  .testimonials h3 { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; text-align: center; color: var(--muted); }
+  .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 16px; }
+  .testi-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 22px; }
+  .testi-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 10px; }
+  .testi-text { font-size: 0.88rem; line-height: 1.6; color: var(--muted); margin-bottom: 14px; font-style: italic; }
+  .testi-author { font-size: 0.8rem; font-weight: 600; color: var(--text); }
+  .testi-role { font-size: 0.75rem; color: var(--muted); }
+
+  /* ERROR */
+  .error-box {
+    background: rgba(255,101,132,0.08); border: 1px solid rgba(255,101,132,0.3);
+    border-radius: 14px; padding: 18px 20px; margin-top: 16px;
+    color: var(--accent2); font-size: 0.88rem; line-height: 1.6;
+  }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  @keyframes scaleIn { from { opacity:0; transform:scale(0.85); } to { opacity:1; transform:scale(1); } }
+
+  @media(max-width:600px) {
+    nav { padding: 14px 20px; }
+    .hero { padding: 50px 16px 40px; }
+    .card { padding: 20px; }
+    .modal { padding: 28px 22px; }
+    .tabs { gap: 3px; }
+    .tab { font-size: 0.78rem; padding: 10px 6px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Hire<span>Edge</span> AI</div>
+  <div class="nav-right">
+    <div class="nav-badge">✦ AI-Powered</div>
+    <button class="nav-pro-btn" onclick="showPaywall()">Go Pro ✦</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-pill">Trusted by 12,000+ job seekers</div>
+  <h1>Land interviews<br><em>faster</em> with AI</h1>
+  <p>Paste your resume and a job posting. Get a tailored cover letter, ATS score, and rewritten bullets in seconds.</p>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">3<span>x</span></div><div class="stat-label">More callbacks</div></div>
+    <div class="stat"><div class="stat-num">90<span>s</span></div><div class="stat-label">Per cover letter</div></div>
+    <div class="stat"><div class="stat-num">94<span>%</span></div><div class="stat-label">Satisfaction rate</div></div>
+  </div>
+</div>
+
+<div class="app-container">
+  <div class="usage-bar" id="usageBar">
+    <div class="usage-fill-track"><div class="usage-fill" id="usageFill" style="width:100%"></div></div>
+    <div class="usage-text" id="usageText"><strong id="usageCount">3</strong> free uses remaining</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" id="tab-btn-cover" onclick="switchTab('cover')">✉️ Cover Letter</button>
+    <button class="tab" id="tab-btn-score" onclick="switchTab('score')">📊 ATS Score</button>
+    <button class="tab" id="tab-btn-rewrite" onclick="switchTab('rewrite')">✨ Rewrite</button>
+  </div>
+
+  <!-- COVER LETTER -->
+  <div id="tab-cover">
+    <div class="card">
+      <div class="card-title"><span class="icon">📄</span>Your Resume</div>
+      <label>Paste your resume or key experience points</label>
+      <textarea id="resumeInput" placeholder="e.g. 3 years in retail management. Led a team of 8. Grew sales 20%. Skilled in Excel and inventory systems..."></textarea>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">🎯</span>Job Description</div>
+      <label>Paste the job posting you're applying for</label>
+      <textarea id="jobInput" placeholder="e.g. We're looking for a Store Manager with 2+ years experience, strong leadership, and a track record of driving sales..."></textarea>
+    </div>
+    <button class="btn-primary" id="coverBtn" onclick="generateCoverLetter()">✦ Generate My Cover Letter</button>
+    <div id="coverResult"></div>
+  </div>
+
+  <!-- ATS SCORE -->
+  <div id="tab-score" style="display:none">
+    <div class="card">
+      <div class="card-title"><span class="icon">📄</span>Your Resume</div>
+      <label>Paste your resume text</label>
+      <textarea id="scoreResume" placeholder="Paste your full resume here..."></textarea>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">🎯</span>Job Description</div>
+      <label>Paste the job you want to apply for</label>
+      <textarea id="scoreJob" placeholder="Paste job description here..."></textarea>
+    </div>
+    <button class="btn-primary" id="scoreBtn" onclick="generateScore()">📊 Analyze My ATS Score</button>
+    <div id="scoreResult"></div>
+  </div>
+
+  <!-- REWRITE -->
+  <div id="tab-rewrite" style="display:none">
+    <div class="card">
+      <div class="card-title"><span class="icon">✍️</span>Weak Resume Text</div>
+      <label>Paste a bullet point or section you want to improve</label>
+      <textarea id="rewriteInput" placeholder="e.g. Responsible for managing the store and helping customers and making sure things ran smoothly..."></textarea>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">🎯</span>Target Role (optional)</div>
+      <label>What job is this for?</label>
+      <input type="text" id="rewriteRole" placeholder="e.g. Marketing Manager, Software Engineer, Nurse...">
+    </div>
+    <button class="btn-primary" id="rewriteBtn" onclick="generateRewrite()">✨ Rewrite & Strengthen</button>
+    <div id="rewriteResult"></div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div class="testimonials">
+  <h3>Real results from real people</h3>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Got 3 interviews in my first week using HireEdge. The cover letters sound so much better than anything I wrote myself."</div>
+      <div class="testi-author">Marcus T.</div><div class="testi-role">Landed a role at Amazon</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"I was applying for months with zero callbacks. After fixing my ATS score here, I got 2 calls the same week."</div>
+      <div class="testi-author">Priya S.</div><div class="testi-role">Software Engineer, NYC</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">"Worth every penny. I used to spend 2 hours on cover letters. Now it's literally 2 minutes."</div>
+      <div class="testi-author">Danielle R.</div><div class="testi-role">Marketing Manager</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYWALL MODAL -->
+<div id="paywallModal" style="display:none">
+  <div class="modal-overlay">
+    <div class="modal">
+      <div class="modal-emoji">🚀</div>
+      <h2>You're on a roll.</h2>
+      <p>You've used all 3 free generations. Unlock unlimited access and never stress about job applications again.</p>
+      <span class="price-tag">$9.99</span>
+      <span class="price-period">per month · cancel anytime</span>
+      <ul class="perks">
+        <li>Unlimited cover letters, tailored to every job</li>
+        <li>Full ATS score analysis for every application</li>
+        <li>AI resume bullet rewriter</li>
+        <li>LinkedIn summary generator (coming soon)</li>
+        <li>Priority email support</li>
+      </ul>
+      <button class="btn-upgrade" onclick="goToCheckout()">Unlock Unlimited Access →</button>
+      <button class="modal-dismiss" onclick="closePaywall()">Maybe later</button>
+      <div class="guarantee">🔒 Secure payment via Stripe · 7-day money-back guarantee</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ─── CONFIG ─────────────────────────────────────────────
+  // After you set up Stripe, paste your Payment Link here:
+  const STRIPE_LINK = 'https://buy.stripe.com/REPLACE_WITH_YOUR_LINK';
+  const FREE_LIMIT = 3;
+
+  // ─── STATE ───────────────────────────────────────────────
+  let usesLeft = parseInt(localStorage.getItem('he_uses') ?? FREE_LIMIT);
+  let isPro = localStorage.getItem('he_pro') === 'true';
+  updateUsageBar();
+
+  function updateUsageBar() {
+    if (isPro) {
+      document.getElementById('usageBar').innerHTML =
+        '<span style="color:var(--accent3);font-size:0.9rem;font-weight:600">✓ Pro — Unlimited generations active</span>';
+      return;
+    }
+    const pct = Math.max(0, (usesLeft / FREE_LIMIT) * 100);
+    document.getElementById('usageFill').style.width = pct + '%';
+    document.getElementById('usageCount').textContent = usesLeft;
+  }
+
+  function checkUsage() {
+    if (isPro) return true;
+    if (usesLeft <= 0) { showPaywall(); return false; }
+    usesLeft--;
+    localStorage.setItem('he_uses', usesLeft);
+    updateUsageBar();
+    return true;
+  }
+
+  function refundUse() {
+    if (!isPro) { usesLeft = Math.min(FREE_LIMIT, usesLeft + 1); localStorage.setItem('he_uses', usesLeft); updateUsageBar(); }
+  }
+
+  function showPaywall() { document.getElementById('paywallModal').style.display = 'flex'; }
+  function closePaywall() { document.getElementById('paywallModal').style.display = 'none'; }
+  function goToCheckout() { window.open(STRIPE_LINK, '_blank'); }
+
+  function switchTab(name) {
+    ['cover','score','rewrite'].forEach(t => {
+      document.getElementById('tab-'+t).style.display = t === name ? 'block' : 'none';
+      document.getElementById('tab-btn-'+t).classList.toggle('active', t === name);
+    });
+  }
+
+  // ─── API CALL (goes to YOUR secure Vercel backend) ───────
+  async function callAI(prompt) {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+    const data = await res.json();
+    if (data.error) throw new Error(data.error);
+    return data.result;
+  }
+
+  // ─── UI HELPERS ──────────────────────────────────────────
+  function setLoading(resultId, btnId) {
+    document.getElementById(resultId).innerHTML =
+      `<div class="loading"><div class="spinner"></div><span>AI is working on it…</span></div>`;
+    document.getElementById(btnId).disabled = true;
+  }
+
+  function setError(resultId, btnId, msg) {
+    document.getElementById(resultId).innerHTML =
+      `<div class="error-box">⚠️ ${msg}</div>`;
+    document.getElementById(btnId).disabled = false;
+  }
+
+  function showResult(resultId, btnId, label, text) {
+    const safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    document.getElementById(resultId).innerHTML = `
+      <div class="result-box">
+        <div class="result-label">${label}</div>
+        <div class="result-text">${safe}</div>
+        <button class="copy-btn" onclick="copyText(this, ${JSON.stringify(text)})">📋 Copy to clipboard</button>
+      </div>`;
+    document.getElementById(btnId).disabled = false;
+  }
+
+  function copyText(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy to clipboard', 2000);
+    });
+  }
+
+  // ─── COVER LETTER ────────────────────────────────────────
+  async function generateCoverLetter() {
+    const resume = document.getElementById('resumeInput').value.trim();
+    const job = document.getElementById('jobInput').value.trim();
+    if (!resume || !job) { alert('Please fill in both fields.'); return; }
+    if (!checkUsage()) return;
+    setLoading('coverResult', 'coverBtn');
+    try {
+      const result = await callAI(`You are an expert career coach and professional cover letter writer.
+
+RESUME: ${resume}
+
+JOB DESCRIPTION: ${job}
+
+Write a compelling, personalized cover letter. Rules:
+- 3 to 4 paragraphs, professional yet warm tone
+- Open with a strong hook, NOT "I am writing to apply"
+- Mirror specific keywords from the job description naturally
+- Highlight 2 to 3 relevant achievements from the resume with impact
+- End with a confident, specific call to action
+- Do not use placeholder text like [Company Name] — infer it or omit it
+- Output the cover letter text only, no preamble or explanation`);
+      showResult('coverResult', 'coverBtn', '✉️ Your Cover Letter', result);
+    } catch(e) { refundUse(); setError('coverResult', 'coverBtn', e.message); }
+  }
+
+  // ─── ATS SCORE ───────────────────────────────────────────
+  async function generateScore() {
+    const resume = document.getElementById('scoreResume').value.trim();
+    const job = document.getElementById('scoreJob').value.trim();
+    if (!resume || !job) { alert('Please fill in both fields.'); return; }
+    if (!checkUsage()) return;
+    setLoading('scoreResult', 'scoreBtn');
+    try {
+      const raw = await callAI(`You are an ATS (Applicant Tracking System) expert. Analyze this resume vs the job description.
+
+RESUME: ${resume}
+JOB DESCRIPTION: ${job}
+
+Return ONLY a valid JSON object, no markdown, no explanation:
+{"overall":72,"keyword_match":65,"formatting":80,"experience_relevance":75,"top_missing_keywords":["keyword1","keyword2","keyword3"],"quick_wins":["Specific actionable tip 1","Specific actionable tip 2","Specific actionable tip 3"]}`);
+
+      let data;
+      try { data = JSON.parse(raw.replace(/```json|```/g,'').trim()); }
+      catch { throw new Error('Score parsing failed — please try again.'); }
+
+      const sc = s => s >= 75 ? 'high' : s >= 50 ? 'mid' : 'low';
+      document.getElementById('scoreResult').innerHTML = `
+        <div class="result-box">
+          <div class="result-label">📊 ATS Analysis Results</div>
+          <div class="score-grid">
+            <div class="score-item"><div class="score-circle ${sc(data.overall)}">${data.overall}</div><div class="score-name">Overall</div></div>
+            <div class="score-item"><div class="score-circle ${sc(data.keyword_match)}">${data.keyword_match}</div><div class="score-name">Keywords</div></div>
+            <div class="score-item"><div class="score-circle ${sc(data.formatting)}">${data.formatting}</div><div class="score-name">Formatting</div></div>
+            <div class="score-item"><div class="score-circle ${sc(data.experience_relevance)}">${data.experience_relevance}</div><div class="score-name">Relevance</div></div>
+          </div>
+          <div style="margin-top:20px">
+            <div class="result-label">🔑 Missing Keywords to Add</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
+              ${data.top_missing_keywords.map(k=>`<span style="background:rgba(255,101,132,0.12);border:1px solid rgba(255,101,132,0.3);color:var(--accent2);padding:5px 12px;border-radius:100px;font-size:0.82rem">${k}</span>`).join('')}
+            </div>
+          </div>
+          <div style="margin-top:20px">
+            <div class="result-label">⚡ Quick Wins</div>
+            ${data.quick_wins.map(t=>`<div style="padding:10px 0;border-bottom:1px solid var(--border);font-size:0.88rem;color:var(--muted)">→ ${t}</div>`).join('')}
+          </div>
+        </div>`;
+      document.getElementById('scoreBtn').disabled = false;
+    } catch(e) { refundUse(); setError('scoreResult', 'scoreBtn', e.message); }
+  }
+
+  // ─── REWRITE ─────────────────────────────────────────────
+  async function generateRewrite() {
+    const text = document.getElementById('rewriteInput').value.trim();
+    const role = document.getElementById('rewriteRole').value.trim();
+    if (!text) { alert('Please paste a resume section to rewrite.'); return; }
+    if (!checkUsage()) return;
+    setLoading('rewriteResult', 'rewriteBtn');
+    try {
+      const result = await callAI(`You are an elite resume writer. Rewrite the following resume text to be powerful, results-focused, and ATS-optimized.
+
+Original: "${text}"
+${role ? `Target role: ${role}` : ''}
+
+Rules:
+- Start each bullet with a strong action verb
+- Add quantified impact where possible (estimate and mark as approx. if needed)
+- Remove weak phrases like "responsible for" or "helped with"
+- Keep each bullet concise and punchy
+- Provide 3 improved versions, each starting with •
+- End with "Best pick:" and one sentence explaining which is strongest and why`);
+      showResult('rewriteResult', 'rewriteBtn', '✨ Rewritten Bullets', result);
+    } catch(e) { refundUse(); setError('rewriteResult', 'rewriteBtn', e.message); }
+  }
+</script>
+</body>
+</html>
